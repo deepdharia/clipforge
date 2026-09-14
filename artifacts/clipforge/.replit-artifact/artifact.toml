@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "ClipForge Video Studio"
+description = "A browser-based video splitting studio for turning long videos into cropped, short-form clips. Users can upload a video, preview it, choose aspect ratios and clip lengths, generate multiple clips locally, and download the results."
+version = "1.0.0"
+id = "artifacts/clipforge"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 26058
+
+[services.development]
+run = "pnpm --filter @workspace/clipforge run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/clipforge", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/clipforge/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "26058"
+BASE_PATH = "/"
